@@ -1,0 +1,1398 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "6cbf741e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import seaborn as sns\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "5790735b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>age</th>\n",
+       "      <th>sex</th>\n",
+       "      <th>cp</th>\n",
+       "      <th>trestbps</th>\n",
+       "      <th>chol</th>\n",
+       "      <th>fbs</th>\n",
+       "      <th>restecg</th>\n",
+       "      <th>thalach</th>\n",
+       "      <th>exang</th>\n",
+       "      <th>oldpeak</th>\n",
+       "      <th>slope</th>\n",
+       "      <th>ca</th>\n",
+       "      <th>thal</th>\n",
+       "      <th>target</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>52</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>125</td>\n",
+       "      <td>212</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>168</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>2</td>\n",
+       "      <td>3</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>53</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>140</td>\n",
+       "      <td>203</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>155</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3.1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>70</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>145</td>\n",
+       "      <td>174</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>125</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2.6</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>61</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>148</td>\n",
+       "      <td>203</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>161</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>62</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>138</td>\n",
+       "      <td>294</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>106</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1.9</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1020</th>\n",
+       "      <td>59</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>140</td>\n",
+       "      <td>221</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>164</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1021</th>\n",
+       "      <td>60</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>125</td>\n",
+       "      <td>258</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>141</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2.8</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1022</th>\n",
+       "      <td>47</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>110</td>\n",
+       "      <td>275</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>118</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1023</th>\n",
+       "      <td>50</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>110</td>\n",
+       "      <td>254</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>159</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1024</th>\n",
+       "      <td>54</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>120</td>\n",
+       "      <td>188</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>113</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>1025 rows × 14 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  \\\n",
+       "0      52    1   0       125   212    0        1      168      0      1.0   \n",
+       "1      53    1   0       140   203    1        0      155      1      3.1   \n",
+       "2      70    1   0       145   174    0        1      125      1      2.6   \n",
+       "3      61    1   0       148   203    0        1      161      0      0.0   \n",
+       "4      62    0   0       138   294    1        1      106      0      1.9   \n",
+       "...   ...  ...  ..       ...   ...  ...      ...      ...    ...      ...   \n",
+       "1020   59    1   1       140   221    0        1      164      1      0.0   \n",
+       "1021   60    1   0       125   258    0        0      141      1      2.8   \n",
+       "1022   47    1   0       110   275    0        0      118      1      1.0   \n",
+       "1023   50    0   0       110   254    0        0      159      0      0.0   \n",
+       "1024   54    1   0       120   188    0        1      113      0      1.4   \n",
+       "\n",
+       "      slope  ca  thal  target  \n",
+       "0         2   2     3       0  \n",
+       "1         0   0     3       0  \n",
+       "2         0   0     3       0  \n",
+       "3         2   1     3       0  \n",
+       "4         1   3     2       0  \n",
+       "...     ...  ..   ...     ...  \n",
+       "1020      2   0     2       1  \n",
+       "1021      1   1     3       0  \n",
+       "1022      1   1     2       0  \n",
+       "1023      2   0     2       1  \n",
+       "1024      1   1     3       0  \n",
+       "\n",
+       "[1025 rows x 14 columns]"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df=pd.read_csv('heart.csv')\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "47251565",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 1025 entries, 0 to 1024\n",
+      "Data columns (total 14 columns):\n",
+      " #   Column    Non-Null Count  Dtype  \n",
+      "---  ------    --------------  -----  \n",
+      " 0   age       1025 non-null   int64  \n",
+      " 1   sex       1025 non-null   int64  \n",
+      " 2   cp        1025 non-null   int64  \n",
+      " 3   trestbps  1025 non-null   int64  \n",
+      " 4   chol      1025 non-null   int64  \n",
+      " 5   fbs       1025 non-null   int64  \n",
+      " 6   restecg   1025 non-null   int64  \n",
+      " 7   thalach   1025 non-null   int64  \n",
+      " 8   exang     1025 non-null   int64  \n",
+      " 9   oldpeak   1025 non-null   float64\n",
+      " 10  slope     1025 non-null   int64  \n",
+      " 11  ca        1025 non-null   int64  \n",
+      " 12  thal      1025 non-null   int64  \n",
+      " 13  target    1025 non-null   int64  \n",
+      "dtypes: float64(1), int64(13)\n",
+      "memory usage: 112.2 KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "4912423d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>age</th>\n",
+       "      <th>sex</th>\n",
+       "      <th>cp</th>\n",
+       "      <th>trestbps</th>\n",
+       "      <th>chol</th>\n",
+       "      <th>fbs</th>\n",
+       "      <th>restecg</th>\n",
+       "      <th>thalach</th>\n",
+       "      <th>exang</th>\n",
+       "      <th>oldpeak</th>\n",
+       "      <th>slope</th>\n",
+       "      <th>ca</th>\n",
+       "      <th>thal</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>52</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>125</td>\n",
+       "      <td>212</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>168</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>2</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>53</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>140</td>\n",
+       "      <td>203</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>155</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3.1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>70</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>145</td>\n",
+       "      <td>174</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>125</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2.6</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>61</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>148</td>\n",
+       "      <td>203</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>161</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>62</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>138</td>\n",
+       "      <td>294</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>106</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1.9</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1020</th>\n",
+       "      <td>59</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>140</td>\n",
+       "      <td>221</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>164</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0</td>\n",
+       "      <td>2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1021</th>\n",
+       "      <td>60</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>125</td>\n",
+       "      <td>258</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>141</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2.8</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1022</th>\n",
+       "      <td>47</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>110</td>\n",
+       "      <td>275</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>118</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1023</th>\n",
+       "      <td>50</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>110</td>\n",
+       "      <td>254</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>159</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0</td>\n",
+       "      <td>2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1024</th>\n",
+       "      <td>54</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0</td>\n",
+       "      <td>120</td>\n",
+       "      <td>188</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>113</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1.4</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>1025 rows × 13 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  \\\n",
+       "0      52    1   0       125   212    0        1      168      0      1.0   \n",
+       "1      53    1   0       140   203    1        0      155      1      3.1   \n",
+       "2      70    1   0       145   174    0        1      125      1      2.6   \n",
+       "3      61    1   0       148   203    0        1      161      0      0.0   \n",
+       "4      62    0   0       138   294    1        1      106      0      1.9   \n",
+       "...   ...  ...  ..       ...   ...  ...      ...      ...    ...      ...   \n",
+       "1020   59    1   1       140   221    0        1      164      1      0.0   \n",
+       "1021   60    1   0       125   258    0        0      141      1      2.8   \n",
+       "1022   47    1   0       110   275    0        0      118      1      1.0   \n",
+       "1023   50    0   0       110   254    0        0      159      0      0.0   \n",
+       "1024   54    1   0       120   188    0        1      113      0      1.4   \n",
+       "\n",
+       "      slope  ca  thal  \n",
+       "0         2   2     3  \n",
+       "1         0   0     3  \n",
+       "2         0   0     3  \n",
+       "3         2   1     3  \n",
+       "4         1   3     2  \n",
+       "...     ...  ..   ...  \n",
+       "1020      2   0     2  \n",
+       "1021      1   1     3  \n",
+       "1022      1   1     2  \n",
+       "1023      2   0     2  \n",
+       "1024      1   1     3  \n",
+       "\n",
+       "[1025 rows x 13 columns]"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x=df.drop(columns=['target'])\n",
+    "x"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "c3147f45",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0       0\n",
+       "1       0\n",
+       "2       0\n",
+       "3       0\n",
+       "4       0\n",
+       "       ..\n",
+       "1020    1\n",
+       "1021    0\n",
+       "1022    0\n",
+       "1023    1\n",
+       "1024    0\n",
+       "Name: target, Length: 1025, dtype: int64"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y=df['target']\n",
+    "y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "5b506755",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import StandardScaler\n",
+    "scaler=StandardScaler()\n",
+    "x_scaled=scaler.fit_transform(x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "37f97d81",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[-0.26843658,  0.66150409, -0.91575542, ...,  0.99543334,\n",
+       "         1.20922066,  1.08985168],\n",
+       "       [-0.15815703,  0.66150409, -0.91575542, ..., -2.24367514,\n",
+       "        -0.73197147,  1.08985168],\n",
+       "       [ 1.71659547,  0.66150409, -0.91575542, ..., -2.24367514,\n",
+       "        -0.73197147,  1.08985168],\n",
+       "       ...,\n",
+       "       [-0.81983438,  0.66150409, -0.91575542, ..., -0.6241209 ,\n",
+       "         0.23862459, -0.52212231],\n",
+       "       [-0.4889957 , -1.51170646, -0.91575542, ...,  0.99543334,\n",
+       "        -0.73197147, -0.52212231],\n",
+       "       [-0.04787747,  0.66150409, -0.91575542, ..., -0.6241209 ,\n",
+       "         0.23862459,  1.08985168]])"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x_scaled"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "ea17581d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import train_test_split"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "a2330b64",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x_train,x_test,y_train,y_test= train_test_split(x_scaled,y,test_size=0.30,random_state=42)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "121e67a5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(717, 13)\n",
+      "(308, 13)\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(x_train.shape)\n",
+    "print(x_test.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "7b47e778",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# logistic regression"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "ed6e7561",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.linear_model import LogisticRegression"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "387bcd68",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = LogisticRegression()\n",
+    "model.fit(x_train,y_train)\n",
+    "y_predicted = model.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "aff32b75",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.8051948051948052"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "log=model.score(x_test,y_test)\n",
+    "log"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "8a445aba",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# KNN"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "d1740135",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.neighbors import KNeighborsClassifier\n",
+    "from sklearn.metrics import accuracy_score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "37e5062e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "knn= KNeighborsClassifier(metric='minkowski')\n",
+    "knn.fit(x_train,y_train)\n",
+    "y_pred=knn.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "b9dd9ccc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.8571428571428571"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "KNN=accuracy_score(y_test, y_pred)\n",
+    "KNN"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "3adefbcf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# SVM"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "82593d39",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.svm import SVC\n",
+    "classifier=SVC(kernel='sigmoid')\n",
+    "classifier.fit(x_train,y_train)\n",
+    "y_pred=classifier.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "ae98fce7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.7662337662337663"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "svm=accuracy_score(y_test,y_pred)\n",
+    "svm"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "c6e14933",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Naive Bayes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "618f22a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.naive_bayes import GaussianNB"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "005c1a36",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "clf=GaussianNB()\n",
+    "clf.fit(x_train,y_train)\n",
+    "y_pred=clf.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "a6c5c9e0",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.814935064935065"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Naive_bayes=accuracy_score(y_test,y_pred)\n",
+    "Naive_bayes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "8d08be7f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Decision Tree"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "id": "cf964d87",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_train,X_test,Y_train,Y_test=train_test_split(x,y,test_size=0.30,random_state=42)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "baebd44d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.tree import DecisionTreeClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "7436236f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "clf=DecisionTreeClassifier()# taking default parameter values as max_depth=5,split criteria= ginni index\n",
+    "clf.fit(X_train,Y_train)\n",
+    "y_pred=clf.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "75c207ce",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9707792207792207"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d_tree=accuracy_score(Y_test,y_pred)\n",
+    "d_tree"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "id": "36b0ad1e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# random forest"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "97020730",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.ensemble import RandomForestClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "id": "6d303ada",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: \"▸\";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: \"▾\";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: \"\";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: \"\";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: \"\";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id=\"sk-container-id-1\" class=\"sk-top-container\"><div class=\"sk-text-repr-fallback\"><pre>RandomForestClassifier()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class=\"sk-container\" hidden><div class=\"sk-item\"><div class=\"sk-estimator sk-toggleable\"><input class=\"sk-toggleable__control sk-hidden--visually\" id=\"sk-estimator-id-1\" type=\"checkbox\" checked><label for=\"sk-estimator-id-1\" class=\"sk-toggleable__label sk-toggleable__label-arrow\">RandomForestClassifier</label><div class=\"sk-toggleable__content\"><pre>RandomForestClassifier()</pre></div></div></div></div></div>"
+      ],
+      "text/plain": [
+       "RandomForestClassifier()"
+      ]
+     },
+     "execution_count": 38,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rand_clf = RandomForestClassifier()\n",
+    "rand_clf.fit(X_train,Y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "5851a478",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_pred=rand_clf.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "b2b495d1",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9805194805194806"
+      ]
+     },
+     "execution_count": 40,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Random_forest=accuracy_score(Y_test,y_pred)\n",
+    "Random_forest"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "5be8960d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ada boost\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "021dc369",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.ensemble import AdaBoostClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "51f51089",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "adbst=AdaBoostClassifier()\n",
+    "adbst.fit(X_train,Y_train)\n",
+    "y_pred=adbst.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "c2b3ab09",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.8733766233766234"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Adaboost=accuracy_score(Y_test,y_pred)\n",
+    "Adaboost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "id": "2ee81cb4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# gradient Boosting"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "id": "73125e16",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.ensemble import GradientBoostingClassifier\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "1459bc64",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gbr= GradientBoostingClassifier()\n",
+    "gbr.fit(X_train,Y_train)\n",
+    "pred_y = gbr.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "id": "1c86900b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9512987012987013"
+      ]
+     },
+     "execution_count": 49,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "gradient_boost=gbr.score(X_test,Y_test)\n",
+    "gradient_boost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "id": "ea0fbf92",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# XG Boost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "abab0799",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from xgboost import XGBClassifier\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "id": "a1cee7c4",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\Tarun\\anaconda3\\lib\\site-packages\\sklearn\\base.py:443: UserWarning: X has feature names, but LogisticRegression was fitted without feature names\n",
+      "  warnings.warn(\n"
+     ]
+    }
+   ],
+   "source": [
+    "xgb= XGBClassifier()\n",
+    "xgb.fit(X_train, Y_train)\n",
+    "y_pred= model.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "id": "21a13f91",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.5162337662337663"
+      ]
+     },
+     "execution_count": 53,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Xtremeboost=accuracy_score(Y_test, y_pred)\n",
+    "Xtremeboost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "id": "83629586",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "models=['Logistic_Regression','KNN','SVM','Naive_Bayes','Decision_Tree','Random_Forest','Adaboost','Gradientboost','XGBoost']\n",
+    "performance=[log,KNN,svm,Naive_bayes,d_tree,Random_forest,Adaboost,gradient_boost,Xtremeboost]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "id": "ba5086ae",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Models</th>\n",
+       "      <th>Performance</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Logistic_Regression</td>\n",
+       "      <td>0.805195</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>KNN</td>\n",
+       "      <td>0.857143</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>SVM</td>\n",
+       "      <td>0.766234</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Naive_Bayes</td>\n",
+       "      <td>0.814935</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Decision_Tree</td>\n",
+       "      <td>0.970779</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>Random_Forest</td>\n",
+       "      <td>0.980519</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>Adaboost</td>\n",
+       "      <td>0.873377</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>Gradientboost</td>\n",
+       "      <td>0.951299</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>XGBoost</td>\n",
+       "      <td>0.516234</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                Models  Performance\n",
+       "0  Logistic_Regression     0.805195\n",
+       "1                  KNN     0.857143\n",
+       "2                  SVM     0.766234\n",
+       "3          Naive_Bayes     0.814935\n",
+       "4        Decision_Tree     0.970779\n",
+       "5        Random_Forest     0.980519\n",
+       "6             Adaboost     0.873377\n",
+       "7        Gradientboost     0.951299\n",
+       "8              XGBoost     0.516234"
+      ]
+     },
+     "execution_count": 55,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pd.DataFrame({'Models':models,\"Performance\":performance})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "id": "522e048f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pickle"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "id": "f01577a1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pickle.dump(rand_clf,open('heart.pkl','wb'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b18dadcc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# wb=write binary"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
